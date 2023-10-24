@@ -1,0 +1,63 @@
+using System;
+using System.Collections.Generic;
+
+{
+    public string Nome { get; set; }
+    public int TempoEspera { get; set; }
+
+    public Cliente(string nome)
+    {
+        Nome = nome;
+        TempoEspera = 0;
+    }
+}
+
+{
+    public string Nome { get; set; }
+
+    public Funcionario(string nome)
+    {
+        Nome = nome;
+    }
+
+    {
+        Console.WriteLine($"Funcionário {Nome} está atendendo o cliente {cliente.Nome} por {cliente.TempoEspera} minutos.");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Queue<Cliente> filaDeEspera = new Queue<Cliente>();
+        List<Funcionario> funcionarios = new List<Funcionario>
+        {
+            new Funcionario("Funcionário 1"),
+            new Funcionario("Funcionário 2"),
+            new Funcionario("Funcionário 3")
+        };
+
+        Random random = new Random();
+
+        for (int i = 1; i <= 10; i++)
+        {
+            var cliente = new Cliente($"Cliente {i}");
+            cliente.TempoEspera = random.Next(1, 11); // Tempo de espera aleatório entre 1 e 10 minutos
+            filaDeEspera.Enqueue(cliente);
+            Console.WriteLine($"Cliente {cliente.Nome} entrou na fila de espera por {cliente.TempoEspera} minutos.");
+        }
+
+        while (filaDeEspera.Count > 0)
+        {
+            Cliente clienteASerAtendido = filaDeEspera.Dequeue();
+            Funcionario funcionarioDisponivel = funcionarios[0]; // Pode ser escolhido o funcionário de forma aleatória
+
+            funcionarioDisponivel.AtenderCliente(clienteASerAtendido);
+
+           
+            System.Threading.Thread.Sleep(clienteASerAtendido.TempoEspera * 1000);
+
+            Console.WriteLine($"Cliente {clienteASerAtendido.Nome} foi atendido em {clienteASerAtendido.TempoEspera} minutos.");
+        }
+    }
+}
